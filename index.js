@@ -14,6 +14,15 @@ backGround.src = "imgs/background.png";
 let ground = new Image();
 ground.src = "imgs/ground.png"
 
+// pipes setup
+let topPipe = new Image();
+topPipe.src = "imgs/toppipe.png"
+
+
+let bottomPipe = new Image();
+bottomPipe.src = "imgs/bottompipe.png"
+
+
 document.addEventListener("keydown", ()=>{
   birdY -= 25;
 });
@@ -26,6 +35,13 @@ function draw(){
   ctx.drawImage(backGround,0, 185);
   ctx.drawImage(ground,0, 305);
   ctx.drawImage(bird, birdX, birdY);
+
+  // draw pipes
+  ctx.drawImage(topPipe, 137, -250);
+
+  ctx.drawImage(bottomPipe, 137, 250);
+
+
 
   if (birdY < 280)
     birdY += 1;
