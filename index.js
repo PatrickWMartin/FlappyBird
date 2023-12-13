@@ -14,43 +14,65 @@ backGround.src = "imgs/background.png";
 let ground = new Image();
 ground.src = "imgs/ground.png"
 
-// pipes setup width 52 height 400
-let topPipe = new Image();
-topPipe.src = "imgs/toppipe.png"
-
-
-let bottomPipe = new Image();
-bottomPipe.src = "imgs/bottompipe.png"
-
 
 document.addEventListener("keydown", ()=>{
-  birdY -= 25;
+  birdY -= 60;
 });
 
 const pipeGap = 100;
 
-function createBottomPipeX(){
-  const maxX = 272;
-  const minX = 130;
-  return Math.floor(Math.random() * (maxX - minX) + minX);
+function createBottomPipeY(){
+  const maxY = 272;
+  const minY = 130;
+  return Math.floor(Math.random() * (maxY - minY) + minY);
 }
 
-const bottomPipeX = createBottomPipeX();
-const topPipeX = bottomPipeX - (pipeGap + 400); 
+
+function createPipe(){
+  const bottomPipeY = createBottomPipeY();
+  const topPipeY = bottomPipeY - (pipeGap + 400); 
+  let pipeX = 300; 
+
+  let topPipe = new Image();
+  topPipe.src = "imgs/toppipe.png"
+
+
+  let bottomPipe = new Image();
+  bottomPipe.src = "imgs/bottompipe.png"
+
+  return {pipeX, topPipeY, bottomPipeY, topPipe, bottomPipe};
+}
+
+
+const pipes = [];
+pipes.push(createPipe())
 function draw(){
-  
+  //pipe clean up
+  for (let pipe of pipes){
+    if (pipe.pipeX < -52){
+       pipes.shift();
+    }
+  }
+
   ctx.clearRect(0, 0, c.width, c.height);
   ctx.drawImage(backGround,0, 185);
   ctx.drawImage(ground,0, 302);
   ctx.drawImage(bird, birdX, birdY);
-  ctx.drawImage(topPipe, 137, topPipeX);
-  ctx.drawImage(bottomPipe, 137, bottomPipeX);
+
+  //draw pipes
+  for (let pipe of pipes){
+    ctx.drawImage(pipe.topPipe, pipe.pipeX, pipe.topPipeY);
+    ctx.drawImage(pipe.bottomPipe, pipe.pipeX, pipe.bottomPipeY);
+    pipe.pipeX-=1;
+    if(pipe.pipeX == 100){
+      pipes.push(createPipe());
+    }
+  }
   ctx.drawImage(ground,0, 302);
 
-
   if (birdY < 280)
-    birdY += 1;
-   
+    birdY += 1.5;
+  
   requestAnimationFrame(draw)
 }
 
