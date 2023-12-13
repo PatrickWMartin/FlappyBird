@@ -14,7 +14,7 @@ backGround.src = "imgs/background.png";
 let ground = new Image();
 ground.src = "imgs/ground.png"
 
-// pipes setup
+// pipes setup width 52 height 400
 let topPipe = new Image();
 topPipe.src = "imgs/toppipe.png"
 
@@ -27,20 +27,25 @@ document.addEventListener("keydown", ()=>{
   birdY -= 25;
 });
 
+const pipeGap = 100;
 
+function createBottomPipeX(){
+  const maxX = 272;
+  const minX = 130;
+  return Math.floor(Math.random() * (maxX - minX) + minX);
+}
+
+const bottomPipeX = createBottomPipeX();
+const topPipeX = bottomPipeX - (pipeGap + 400); 
 function draw(){
   
   ctx.clearRect(0, 0, c.width, c.height);
-
   ctx.drawImage(backGround,0, 185);
-  ctx.drawImage(ground,0, 305);
+  ctx.drawImage(ground,0, 302);
   ctx.drawImage(bird, birdX, birdY);
-
-  // draw pipes
-  ctx.drawImage(topPipe, 137, -250);
-
-  ctx.drawImage(bottomPipe, 137, 250);
-
+  ctx.drawImage(topPipe, 137, topPipeX);
+  ctx.drawImage(bottomPipe, 137, bottomPipeX);
+  ctx.drawImage(ground,0, 302);
 
 
   if (birdY < 280)
