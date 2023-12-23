@@ -7,6 +7,8 @@ let birdX = 10;
 let birdY = 150;
 
 
+ctx.font = "30px Arial";
+
 let backGround = new Image();
 backGround.src = "imgs/background.png";
 
@@ -16,7 +18,7 @@ ground.src = "imgs/ground.png"
 
 
 document.addEventListener("keydown", ()=>{
-  birdY -= 60;
+  birdY -= 50;
 });
 
 const pipeGap = 100;
@@ -42,7 +44,7 @@ function createPipe(){
 
   return {pipeX, topPipeY, bottomPipeY, topPipe, bottomPipe};
 }
-
+let score = 0;
 
 const pipes = [];
 pipes.push(createPipe())
@@ -53,11 +55,15 @@ function draw(){
        pipes.shift();
     }
   }
-
   ctx.clearRect(0, 0, c.width, c.height);
+  
+  
+
   ctx.drawImage(backGround,0, 185);
   ctx.drawImage(ground,0, 302);
   ctx.drawImage(bird, birdX, birdY);
+
+  
 
   //draw pipes
   for (let pipe of pipes){
@@ -67,12 +73,17 @@ function draw(){
     if(pipe.pipeX == 100){
       pipes.push(createPipe());
     }
+    
+    if (pipe.pipeX == 5){
+      score+=1;
+    }
   }
   ctx.drawImage(ground,0, 302);
 
   if (birdY < 280)
     birdY += 1.5;
   
+  ctx.fillText(`${score}`, 137.5, 50);
   requestAnimationFrame(draw)
 }
 
